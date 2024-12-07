@@ -1,0 +1,52 @@
+const { FlatCompat } = require('@eslint/eslintrc')
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended')
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+})
+
+module.exports = [
+  ...compat.extends('standard-with-typescript'),
+  ...compat.extends('standard-react'),
+  eslintPluginPrettierRecommended,
+  {
+    rules: {
+      'react/prop-types': 0,
+      'react/react-in-jsx-scope': 0,
+      curly: ['error', 'multi-line'],
+      'import/order': [
+        'error',
+        {
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+          groups: ['builtin', 'external', 'internal'],
+          pathGroups: [
+            { pattern: 'react', group: 'external', position: 'before' },
+            { pattern: '@/**', group: 'internal', position: 'before' },
+            { pattern: '@root/**', group: 'internal', position: 'before' },
+          ],
+          pathGroupsExcludedImportTypes: ['react'],
+        },
+      ],
+    },
+  },
+  {
+    files: ['*.ts', '*.tsx'],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 0,
+      '@typescript-eslint/triple-slash-reference': 0,
+      '@typescript-eslint/strict-boolean-expressions': 0,
+    },
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+        sourceType: 'module',
+        createDefaultProgram: true,
+      },
+    },
+  },
+  { ignores: ['build/**', '.yarn/**'] },
+]
