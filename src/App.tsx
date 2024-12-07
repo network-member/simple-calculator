@@ -1,15 +1,23 @@
-import type { FC } from 'react'
+import { useState } from 'react'
+import type { ReactElement } from 'react'
 
+import { Calculator } from './components/Calculator'
 import { GlobalStyles } from './components/GlobalStyles'
-import { CRAHomePage } from './pages/CRAHomePage'
 
-const App: FC = () => {
+export default function App(): ReactElement {
+  const [isVisible, setVisibility] = useState(true)
+
   return (
     <>
       <GlobalStyles />
-      <CRAHomePage />
+      <button
+        onClick={() => {
+          setVisibility(!isVisible)
+        }}
+      >
+        Hide
+      </button>
+      {isVisible ? <Calculator /> : null}
     </>
   )
 }
-
-export default App
